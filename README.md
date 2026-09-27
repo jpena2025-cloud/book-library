@@ -84,6 +84,12 @@ Supabase Row Level Security policies ensure that users can only read, update, an
 
 [Open My Book Library](https://gentle-phoenix-98092f.netlify.app)
 
+## Demo Video
+
+Watch the full project demonstration here:
+
+[My Book Library - Demo Video](https://youtu.be/7FVk7KalMns)
+
 ## AI Development
 
 ChatGPT was used as the AI coding assistant during development.
