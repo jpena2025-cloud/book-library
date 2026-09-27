@@ -15,8 +15,40 @@
     </header>
 
     <main>
+        <!--------------------------------------- User Authentication ----------------------------------->
+<section id="auth-section">
+    <h2>User Account</h2>
 
-        <!-- Form to add books -->
+    <form id="auth-form">
+        <label for="email">Email</label>
+        <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            required
+        >
+
+        <label for="password">Password</label>
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter your password"
+            required
+        >
+
+        <button type="button" id="signup-btn">Register</button>
+        <button type="button" id="login-btn">Login</button>
+    </form>
+
+    <div id="user-info" style="display: none;">
+        <p id="user-email"></p>
+        <button type="button" id="logout-btn">Logout</button>
+    </div>
+
+    <p id="auth-message"></p>
+</section>
+
+        <!------------------------------------- Form to add books --------------------------------->
         <section>
             <h2>Add a Book</h2>
 
@@ -58,7 +90,7 @@
             </form>
         </section>
 
-        <!-- Book collection -->
+        <!---------------------------------------- Book collection -------------------------------------->
         <section>
             <h2>My Books</h2>
 
