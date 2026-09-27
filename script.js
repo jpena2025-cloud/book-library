@@ -179,6 +179,13 @@ bookForm.addEventListener("submit", async (event) => {
     const genre = document.getElementById("genre").value.trim();
     const status = document.getElementById("status").value;
 
+    const { data: { user } } = await db.auth.getUser();
+
+if (!user) {
+    alert("You must be logged in to add a book.");
+    return;
+}
+    
     const { error } = await db
         .from("books")
         .insert([
@@ -186,7 +193,8 @@ bookForm.addEventListener("submit", async (event) => {
                 title: title,
                 author: author,
                 genre: genre,
-                status: status
+                status: status,
+                user_id: user.id
             }
         ]);
 
