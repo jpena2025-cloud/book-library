@@ -7,6 +7,107 @@ const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const bookForm = document.getElementById("book-form");
 const bookList = document.getElementById("book-list");
 
+//--------------------------------    Authentication elements
+const authForm = document.getElementById("auth-form");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const signupButton = document.getElementById("signup-btn");
+const loginButton = document.getElementById("login-btn");
+const logoutButton = document.getElementById("logout-btn");
+const authMessage = document.getElementById("auth-message");
+const userInfo = document.getElementById("user-info");
+const userEmail = document.getElementById("user-email");
+
+// Update the page depending on login status
+function updateAuthUI(user) {
+    if (user) {
+        authForm.style.display = "none";
+        userInfo.style.display = "block";
+        userEmail.textContent = `Logged in as: ${user.email}`;
+        bookForm.style.display = "grid";
+    } else {
+        authForm.style.display = "grid";
+        userInfo.style.display = "none";
+        userEmail.textContent = "";
+        bookForm.style.display = "none";
+    }
+}
+
+// --------------------------------------------   REGISTER
+signupButton.addEventListener("click", async () => {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    if (!email || !password) {
+        authMessage.textContent = "Please enter an email and password.";
+        return;
+    }
+
+    const { error } = await db.auth.signUp({
+        email: email,
+        password: password
+    });
+
+    if (error) {
+        authMessage.textContent = error.message;
+        return;
+    }
+
+    authMessage.textContent =
+        "Registration successful. Check your email to confirm your account.";
+});
+
+// -----------------------------            LOGIN
+loginButton.addEventListener("click", async () => {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    if (!email || !password) {
+        authMessage.textContent = "Please enter an email and password.";
+        return;
+    }
+
+    const { error } = await db.auth.signInWithPassword({
+        email: email,
+        password: password
+    });
+
+    if (error) {
+        authMessage.textContent = error.message;
+        return;
+    }
+
+    authMessage.textContent = "Login successful.";
+    authForm.reset();
+});
+
+// --------------------------------------------------        LOGOUT
+logoutButton.addEventListener("click", async () => {
+    const { error } = await db.auth.signOut();
+
+    if (error) {
+        authMessage.textContent = error.message;
+        return;
+    }
+
+    authMessage.textContent = "You have been logged out.";
+});
+
+// Check current login status
+async function checkUser() {
+    const {
+        data: { user }
+    } = await db.auth.getUser();
+
+    updateAuthUI(user);
+}
+
+db.auth.onAuthStateChange((_event, session) => {
+    updateAuthUI(session?.user ?? null);
+});
+
+checkUser();
+
 // Load books when the page opens
 async function loadBooks() {
     const { data: books, error } = await db
